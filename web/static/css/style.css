@@ -1,0 +1,11 @@
+body {
+    font-family: Arial, sans-serif;
+    color: aliceblue;
+    background-color: #3d3d3d;
+}
+#testDataLink{
+    color: #4CAF50 !important;
+}
+#testDataLink:hover{
+    color: #459749 !important;
+}
