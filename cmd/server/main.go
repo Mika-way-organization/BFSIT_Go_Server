@@ -5,10 +5,27 @@ import (
 
 	"github.com/gin-gonic/gin"
 
+	"BFSITGoServer/config"
 	"BFSITGoServer/internal/api"
 	"BFSITGoServer/internal/core/services"
+	"BFSITGoServer/internal/middelware"
 	"BFSITGoServer/web"
 )
+
+var ExpectedAPIKeys = []string{}
+
+func init() {
+	config.LoadConfig() // Lädt alle Werte und speichert sie in config.Config
+
+	// JETZT, da config.Config gefüllt ist, können wir die Keys für die Middleware vorbereiten.
+	ExpectedAPIKeys = []string{
+		config.Config.GruppeOneAPIKey,
+		config.Config.GruppeTwoAPIKey,
+		config.Config.GruppeThreeAPIKey,
+		config.Config.GruppeFourAPIKey,
+		config.Config.GruppeFiveAPIKey,
+	}
+}
 
 func main() {
 	dataSVC := services.NewTestService() // Instanz des TestService erstellen
@@ -28,15 +45,21 @@ func main() {
 
 	apis := router.Group("/api") // Gruppe für Test-API-Routen
 	{
-		apis.GET("/test", config.GetTestHanlder) // Test-API-Route
+		apis.Use(middelware.APIKeyAuthMiddleware(ExpectedAPIKeys)) // API-Key-Middleware anwenden
+		apis.GET("/test", config.GetTestHanlder)                   // Test-API-Route
 	}
 
 	// Starte den Server auf Port 8080
 	port := 8080
-	err := router.Run(fmt.Sprintf(":%d", port))
-	if err != nil {
-		fmt.Printf("Fehler beim Starten des Servers: %v\n", err)
-	}
+	addr := fmt.Sprintf(":%d", port)
 
-	fmt.Printf("Der Server läuft auf http://127.0.0.1:%d\n", port)
+	fmt.Printf("Der Server startet auf http://127.0.0.1%s\n", addr)
+
+	err := router.Run(addr)
+
+	// Dieser Teil wird nur ausgeführt, wenn router.Run() mit einem Fehler beendet wird.
+	if err != nil {
+		// gin.Run verwendet intern log.Fatal, aber wenn Sie den Fehler hier selbst behandeln wollen,
+		fmt.Printf("Kritischer Fehler beim Beenden des Servers: %v\n", err)
+	}
 }
