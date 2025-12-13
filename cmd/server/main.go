@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"BFSITGoServer/config"
+	"BFSITGoServer/data"
 	"BFSITGoServer/internal/api"
 	"BFSITGoServer/internal/core/services"
 	"BFSITGoServer/internal/middelware"
@@ -28,6 +29,9 @@ func init() {
 }
 
 func main() {
+	//Datenbank verbindung Testen
+	data.Database()
+
 	dataSVC := services.NewTestService() // Instanz des TestService erstellen
 
 	// Router-Konfiguration mit den erforderlichen Diensten
