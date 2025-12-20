@@ -36,7 +36,7 @@ func APIKeyAuthMiddleware(allowedKeys []string) gin.HandlerFunc {
 			// Antwort mit 401 Unauthorized und Abbruch der Anfrage
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
 				"status":  "Error",
-				"message": "Ungültiger oder fehlender API-Schlüssel.",
+				"message": "Bitte überpüfen Sie Ihren API-Schlüssel und versuchen Sie es erneut.",
 			})
 			return
 		}
