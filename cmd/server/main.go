@@ -33,10 +33,12 @@ func main() {
 	data.Database()
 
 	dataSVC := services.NewTestService() // Instanz des TestService erstellen
+	jokeSVC := services.NewJokeService() // Instanz des JokeService erstellen
 
 	// Router-Konfiguration mit den erforderlichen Diensten
 	config := &api.RouterConfig{
 		TestService: dataSVC,
+		JokeService: jokeSVC,
 	}
 
 	// Gibt mir die Gin-Router-Instanz zurück
@@ -51,6 +53,7 @@ func main() {
 	{
 		apis.Use(middelware.APIKeyAuthMiddleware(ExpectedAPIKeys)) // API-Key-Middleware anwenden
 		apis.GET("/test", config.GetTestHanlder)                   // Test-API-Route
+		apis.GET("/joke", config.GetJokeHandler)                   // Witz-API-Route
 	}
 
 	// Starte den Server auf Port 8080
