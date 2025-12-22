@@ -47,7 +47,7 @@ func main() {
 	router.LoadHTMLGlob("web/templates/*.html") //Läd alle HTML Templates
 	router.Static("/static", "web/static")      //Statischer Ordner für CSS, JS, Bilder etc.
 
-	router.GET("/", gin.WrapF(web.IndexHandler)) // Index-Route
+	router.GET("/bfsit", gin.WrapF(web.IndexHandler)) // Index-Route
 
 	apis := router.Group("/api") // Gruppe für Test-API-Routen
 	{
