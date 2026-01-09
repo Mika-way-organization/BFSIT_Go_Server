@@ -47,7 +47,7 @@ func main() {
 	router.LoadHTMLGlob("web/templates/*.html") //Läd alle HTML Templates
 	router.Static("/static", "web/static")      //Statischer Ordner für CSS, JS, Bilder etc.
 
-	router.GET("/bfsit", gin.WrapF(web.IndexHandler)) // Index-Route
+	router.GET("/", gin.WrapF(web.IndexHandler)) // Index-Route
 
 	apis := router.Group("/api") // Gruppe für Test-API-Routen
 	{
@@ -57,7 +57,7 @@ func main() {
 	}
 
 	// Starte den Server auf Port 8080
-	port := 8080
+	port := 8085
 	addr := fmt.Sprintf(":%d", port)
 
 	fmt.Printf("Der Server startet auf http://127.0.0.1%s\n", addr)
